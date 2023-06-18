@@ -7,7 +7,7 @@ from consolidations import get_consolidations
 app = Flask(__name__)
 CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
-app.config['CORS_ORIGINS'] = ['http://localhost:3000']
+app.config['CORS_ORIGINS'] = ['http://192.168.1.167:3000']
 
 
 # Route for getting consolidations
@@ -17,7 +17,7 @@ def fetch_consolidations():
     try:
         data = request.json
         consolidations = get_consolidations(data['location'])
-        print(consolidations)
         return jsonify(consolidations)
     except Exception as e:
+        print(e)
         return jsonify({"error": str(e)})
