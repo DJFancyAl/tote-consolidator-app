@@ -2,12 +2,11 @@ from flask import Flask, request, jsonify, abort
 from flask_cors import CORS, cross_origin
 from consolidations import get_consolidations
 
-
 # Configure App
 app = Flask(__name__)
 CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
-app.config['CORS_ORIGINS'] = ['http://192.168.1.167:3000']
+app.config['CORS_ORIGINS'] = '*'
 
 
 # Route for getting consolidations

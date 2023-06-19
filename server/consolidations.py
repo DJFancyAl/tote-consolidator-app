@@ -1,4 +1,5 @@
 import pandas as pd
+from database_sql import get_inventory
 
 # Variaables
 locations_870 = ['870', '870-1', '870-2', '870-3', '870-4', '870-5', '870-6']
@@ -8,10 +9,10 @@ locations_940 = ['940', '940.2', '940.4', 'Dirty Totes', 'Drop for 870', 'Jaco G
                 'Zone C', 'Zone D', 'Zone E']
 
 
-# Get data from the CSV file
-def fetch_data():
-    df = pd.read_csv('data.csv')
-    return df
+# # Get data from the CSV file
+# def fetch_data():
+#     df = pd.read_csv('data.csv')
+#     return df
 
 
 # Filter by location
@@ -78,7 +79,7 @@ def check_mergable(matches):
 
 # Get Consolidations
 def get_consolidations(location):
-    df = fetch_data()
+    df = get_inventory()
     df = filter_location(location, df)
     multiples = find_multiples(df)
     df = filter_multiples(df, multiples)
