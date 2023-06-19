@@ -9,12 +9,6 @@ locations_940 = ['940', '940.2', '940.4', 'Dirty Totes', 'Drop for 870', 'Jaco G
                 'Zone C', 'Zone D', 'Zone E']
 
 
-# # Get data from the CSV file
-# def fetch_data():
-#     df = pd.read_csv('data.csv')
-#     return df
-
-
 # Filter by location
 def filter_location(location, df):
     if location == 'rave':
@@ -47,7 +41,7 @@ def find_multiples(df):
 def filter_multiples(df, multiples):
     filtered = df['gmc'].isin(multiples)
     df = df[ filtered ]
-    df = df.sort_values(by=['gmc'])
+
     return df
 
 
@@ -71,10 +65,13 @@ def check_mergable(matches):
                 if tote['batch'] != compTote['batch']:
                     if (tote['weight'] + compTote['weight']) < 1850:
                         added_list.append(compTote.to_dict())
+        
+        added_list = sorted(added_list, key=lambda x: x['weight'])
 
-        if len(added_list) >0:
+        if len(added_list) > 0:
             consolidations.append(added_list)
 
+    consolidations = sorted(consolidations, key=lambda x: x[0]['color'])
     return consolidations
 
 # Get Consolidations
