@@ -2,6 +2,7 @@ import pandas as pd
 from database_sql import get_inventory
 
 # Variaables
+max_weight = 1850 #lbs.
 locations_870 = ['870', '870-1', '870-2', '870-3', '870-4', '870-5', '870-6']
 locations_940 = ['940', '940.2', '940.4', 'Dirty Totes', 'Drop for 870', 'Jaco Grinding',
                 'Pregrinds', 'Pregrinds 2', 'Pregrinds 3', 'Pregrinds 4',
@@ -19,6 +20,7 @@ def filter_location(location, df):
         return df
 
     df = df[ filtered ]
+
     return df
 
 
@@ -58,18 +60,20 @@ def check_matches(df, multiples):
 # Check if weights can be combined
 def check_mergable(matches):
     consolidations = []
-    for match in matches:
-        added_list = []
-        for i, tote in match.iterrows():
-            for j, compTote in match.iterrows():
-                if tote['batch'] != compTote['batch']:
-                    if (tote['weight'] + compTote['weight']) < 1850:
-                        added_list.append(compTote.to_dict())
-        
-        added_list = sorted(added_list, key=lambda x: x['weight'])
 
-        if len(added_list) > 0:
-            consolidations.append(added_list)
+    for match in matches:
+        match = match.to_dict(orient="records")
+        remaining_totes = match
+
+        for tote in match:
+            if tote in remaining_totes:
+                for item in remaining_totes:
+                    if tote != item:
+                        if (tote['weight'] + item['weight']) <= max_weight:
+                            consolidations.append([tote, item])
+                            remaining_totes.remove(tote)
+                            remaining_totes.remove(item)
+                            break
 
     consolidations = sorted(consolidations, key=lambda x: x[0]['color'])
     return consolidations
