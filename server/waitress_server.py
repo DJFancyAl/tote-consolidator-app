@@ -1,7 +1,7 @@
 from waitress import serve
 from app import app
 
-port=8080
+port=5000
 
 if __name__ == '__main__':
     print(f'Running on port {port}...')
