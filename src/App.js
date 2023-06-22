@@ -1,24 +1,46 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState, useEffect } from 'react';
+import { createTheme } from '@mui/material/styles';
+import { ThemeProvider } from '@material-ui/core/styles';
+import Paper from '@mui/material/Paper';
+import BrandBar from './Components/BrandBar';
+import ConsolidationList from './Components/ConsolidationList';
+import Navbar from './Components/Navbar';
+
+// Collect Location from localstorage
+let storedLocation = localStorage.getItem("location");
+if(storedLocation == null) storedLocation = 'rave';
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#37832b',
+      dark: '#212529',
+      light: '#aaaaaa'
+    },
+    secondary: {
+      main: '#FFEFE1',
+    }
+  }
+});
+
 
 function App() {
+  // State
+  const [location, setLocation] = useState(storedLocation)
+
+  // Update Local Storage
+  useEffect(() => {
+    localStorage.setItem("location", location)
+  }, [location])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+      <Paper sx={{maxWidth: '100vw', minHeight: '100vh', margin: '0', backgroundColor: theme.palette.primary.light, display: 'flex', flexDirection: 'column'}}>
+        <BrandBar />
+        <ConsolidationList location={location} />
+        <Navbar location={location} setLocation={setLocation} />
+      </Paper>
+    </ThemeProvider>
   );
 }
 
