@@ -7,7 +7,7 @@ import pandas as pd
 
 # Initialize Connection
 def get_inventory():
-    df = pd.read_csv('data.csv')
+    df = pd.read_csv('./data.csv')
 #     load_dotenv()
 #     connection_string = os.getenv("SQL_CONNECTION")
 #     engine = create_engine(connection_string)
@@ -28,7 +28,6 @@ def get_inventory():
 
 #     df = pd.read_sql_query(query, engine)
 
-# #     df.to_csv('data.csv', sep=',')
 #     connection.close()
 
     return df
