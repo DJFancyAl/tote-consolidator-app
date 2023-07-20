@@ -18,4 +18,5 @@ def fetch_consolidations():
         consolidations = get_consolidations(data['location'])
         return jsonify(consolidations)
     except Exception as e:
+        print(e)
         return jsonify({"error": str(e)})
