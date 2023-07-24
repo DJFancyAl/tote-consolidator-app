@@ -1,8 +1,10 @@
 # Imports
 import os
+import csv
 from dotenv import load_dotenv
 from sqlalchemy import create_engine, text
 import pandas as pd
+from locations import locations_870, locations_940
 
 
 # Initialize Connection
@@ -32,3 +34,37 @@ def get_inventory():
 #     connection.close()
 
     return df
+
+
+def search_gmc(gmc, location):
+    with open('data.csv', 'r') as f:
+        reader = csv.DictReader(f)
+        results = []
+
+        for row in reader:
+            results.append(row)
+
+    filtered = filter(lambda x: x['gmc'] == gmc, results)
+    if location == 'rave':
+        return(list(filter(lambda x: x['location'] in locations_870, filtered)))
+    elif location == 'jaco':
+        return(list(filter(lambda x: x['location'] in locations_940, filtered)))
+    else:
+        return(list(filter(lambda x: x['location'] in locations_870 or x['location'] in locations_940, filtered)))
+
+
+def search_color(color, size, location):
+    with open('data.csv', 'r') as f:
+        reader = csv.DictReader(f)
+        results = []
+
+        for row in reader:
+            results.append(row)
+
+    filtered = filter(lambda x: x['color'] == color and x['size'] == size, results)
+    if location == 'rave':
+        return(list(filter(lambda x: x['location'] in locations_870, filtered)))
+    elif location == 'jaco':
+        return(list(filter(lambda x: x['location'] in locations_940, filtered)))
+    else:
+        return(list(filter(lambda x: x['location'] in locations_870 or x['location'] in locations_940, filtered)))
